@@ -15,7 +15,6 @@ class TaskController extends Controller
     
     public function fetchTasks()
     {
-        // Transform is_completed to completed for frontend consistency
         return response()->json(Task::all()->map(function($task) {
             return [
                 'id' => $task->id,
@@ -32,7 +31,6 @@ class TaskController extends Controller
         $request->validate(['title' => 'required|unique:tasks,title']);
         $task = Task::create(['title' => $request->title]);
         
-        // Return with proper format for frontend
         return response()->json([
             'id' => $task->id,
             'title' => $task->title,
@@ -46,7 +44,6 @@ class TaskController extends Controller
     {
         $task->update(['is_completed' => !$task->is_completed]);
         
-        // Return with proper format for frontend
         return response()->json([
             'id' => $task->id,
             'title' => $task->title,
