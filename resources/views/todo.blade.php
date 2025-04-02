@@ -42,7 +42,6 @@
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
             });
 
-            // Track if we're showing all tasks
             let showingAllTasks = false;
 
             function fetchTasks() {
@@ -51,7 +50,6 @@
                     tasks.forEach(task => {
                         $('#taskList').append(renderTask(task));
                     });
-                    // Apply visibility rules after loading tasks
                     updateTaskVisibility();
                 });
             }
@@ -67,7 +65,7 @@
                     </li>`;
             }
 
-            // Handle showing/hiding completed tasks
+
             function updateTaskVisibility() {
                 if (showingAllTasks) {
                     $('#taskList .list-group-item').show();
@@ -82,7 +80,7 @@
                 }
             }
 
-            // Add task
+
             $('#addTask').click(function () {
                 let title = $('#taskInput').val().trim();
                 if (!title) return alert('Task cannot be empty');
@@ -108,7 +106,6 @@
                 }
             });
 
-            // Delete task
             $(document).on('click', '.delete-task', function () {
                 if (!confirm('Are you sure to delete this task?')) return;
                 let id = $(this).data('id');
@@ -120,7 +117,6 @@
                 });
             });
 
-            // Toggle task completion
             $(document).on('change', '.toggle-status', function () {
                 let id = $(this).data('id');
                 let completed = $(this).is(':checked');
@@ -131,10 +127,8 @@
                     type: 'PATCH',
                     data: { completed: completed },
                     success: (task) => {
-                        // Update task appearance
                         $(this).siblings('.task-title').toggleClass('completed', task.completed);
                         
-                        // Update visibility based on current filter
                         if (task.completed && !showingAllTasks) {
                             listItem.fadeOut();
                         } else {
@@ -144,7 +138,6 @@
                 });
             });
             
-            // Toggle showing all tasks
             $('#showAllTasks').change(function() {
                 showingAllTasks = $(this).prop('checked');
                 updateTaskVisibility();
